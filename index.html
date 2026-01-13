@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>ESP32 Monitoring IoT Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- MQTT -->
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter&display=swap" rel="stylesheet">
+
+  <!-- Style -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<audio id="menuSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-click-box-check-1120.mp3">
+</audio>
+
+<!-- ================= LOGIN PAGE ================= -->
+<div id="loginPage" class="login-page">
+  <nav class="login-nav">
+    <div class="logo">⚡ D3 Teknologi Elektronika</div>
+    <ul>
+      <li><a href="#" onclick="showInfo('home')">Home</a></li>
+      <li><a href="#" onclick="showInfo('about')">About</a></li>
+      <li><a href="#" onclick="showInfo('service')">Service</a></li>
+      <li><a href="#" onclick="showInfo('design')">Design</a></li>
+      <li><a href="#" onclick="showInfo('contact')">Contact</a></li>
+    </ul>
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="Type to search...">
+    </div>
+  </nav>
+
+  <div class="login-box glow">
+    <h1>⚡ MONITORING ACCESS</h1>
+    <p>ESP32 IoT Realtime System</p>
+
+    <div class="input-group">
+      <input id="username" placeholder="Username">
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="input-group">
+      <input id="password" type="password" placeholder="Password">
+    </div>
+
+    <!-- CHECKBOX SHOW PASSWORD -->
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+      margin:6px 0 10px;
+      opacity:0.9;
+    ">
+      <input type="checkbox" id="showPassword" onclick="togglePasswordCheckbox()">
+      <label for="showPassword">Tampilkan Password</label>
+    </div>
+
+    <!-- SOCIAL ICON -->
+    <div class="login-social-icons" style="
+      display:flex;
+      justify-content:center;
+      gap:26px;
+      margin:18px 0;
+    ">
+
+      <!-- Instagram -->
+      <a href="https://instagram.com/d3teknologielektronika"
+         target="_blank"
+         title="Instagram"
+         style="color:#00eaff;">
+        <svg viewBox="0 0 24 24" width="30" height="30">
+          <path fill="currentColor"
+            d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm0 7.4A2.9 2.9 0 1 1 14.9 12 2.9 2.9 0 0 1 12 14.9zM17.8 6.2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+        </svg>
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:d3teknologielektronika24@gmail.com"
+         title="Email"
+         style="color:#2414da;">
+        <svg viewBox="0 0 24 24" width="30" height="30">
+          <path fill="currentColor"
+            d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+      </a>
+
+    </div>
+
+    <button onclick="login()">ENTER SYSTEM</button>
+    <p id="loginError" class="error"></p>
+  </div>
+</div>
+
+<!-- ================= INFO MODAL ================= -->
+<div id="infoModal" class="info-modal">
+  <div class="info-content">
+    <h2 id="infoTitle"></h2>
+    <p id="infoText"></p>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboard" style="display:none">
+
+<header>
+  <div>
+    <h1> ⚡ MONITORING IOT ESP32 CONTROL CENTER</h1>
+    <p>     Electrical Engineering • Monitoring Realtime</p>
+  </div>
+  <div class="online">
+    <span class="led-online"></span> DEVICE ONLINE
+    <button class="logout" onclick="logout()">LOGOUT</button>
+  </div>
+</header>
+
+<section class="panel">
+
+  <div class="card glow">
+    <h3>🌡 Krisna — Sensor DHT</h3>
+    <span class="status online">ONLINE</span>
+    <p>Suhu: <b><span id="suhu">--</span> °C</b></p>
+    <p>Kelembapan: <b><span id="kelembapan">--</span> %</b></p>
+  </div>
+
+  <div class="card glow">
+    <h3>🌱 Hasnul — Soil Monitoring</h3>
+    <span class="status online">ONLINE</span>
+    <p>Suhu: <b><span id="soilSuhu">--</span> °C</b></p>
+    <p>Kelembapan: <b><span id="soilHum">--</span> %</b></p>
+    <p>Soil Analog: <b><span id="soilAnalog">--</span></b></p>
+    <p>Status Tanah: <b><span id="soilStatus">--</span></b></p>
+  </div>
+
+  <div class="card glow">
+    <h3>🌡 Arif — Suhu NTC</h3>
+    <span class="status online">ONLINE</span>
+    <p>Suhu NTC: <b><span id="ntc">--</span> °C</b></p>
+  </div>
+
+  <div class="card glow">
+    <h3>💧 Sita — Sensor Air</h3>
+    <span class="status online">ONLINE</span>
+    <p>Suhu : <b><span id="waterTemp">--</span> °C</b></p>
+    <p>Kelembapan: <b><span id="waterHum">--</span> %</b></p>
+    <p>Water Level: <b><span id="water">--</span></b></p>
+  </div>
+
+</section>
+
+<section class="log-section">
+  <h2>📜 DATA LOG REAL-TIME</h2>
+  <div class="log-box" id="logBox"></div>
+</section>
+
+<footer>
+  © 2026 — Dashboard Monitoring Electrical Engineering | D3TE2024
+</footer>
+
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+  function togglePasswordCheckbox() {
+    const pwd = document.getElementById("password");
+    pwd.type = pwd.type === "password" ? "text" : "password";
+  }
+</script>
+<script src="script.js"></script>
+</body>
+</html>

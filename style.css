@@ -1,0 +1,279 @@
+/* ================= GLOBAL ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #050b18, #000);
+  color: #e6f1ff;
+  overflow-x: hidden;
+}
+
+/* ================= PARTICLE ================= */
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+}
+
+/* ================= LOGIN PAGE ================= */
+.login-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-box {
+  background: rgba(5, 15, 40, 0.85);
+  padding: 40px;
+  width: 360px;
+  border-radius: 16px;
+  box-shadow: 0 0 40px #00eaff55;
+  animation: float 4s ease-in-out infinite, glowBox 3s infinite alternate;
+}
+
+.login-box h1 {
+  font-family: 'Orbitron';
+  text-align: center;
+  color: #00eaff;
+}
+
+.login-box p {
+  text-align: center;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: #020c25;
+  color: #00eaff;
+  box-shadow: inset 0 0 10px #00eaff33;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #00eaff, #0077ff);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  box-shadow: 0 0 15px #00eaffaa;
+}
+
+button:hover {
+  box-shadow: 0 0 30px #00eaff;
+}
+
+/* ================= NAV LOGIN ================= */
+.login-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: rgba(0,0,0,0.7);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.login-nav ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.login-nav ul li a {
+  color: #00eaff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-nav ul li a:hover {
+  text-shadow: 0 0 15px #00eaff;
+}
+
+/* ================= HEADER ================= */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background: rgba(0,0,0,0.4);
+  border-bottom: 1px solid #00eaff55;
+}
+
+header h1 {
+  font-family: 'Orbitron';
+  color: #00eaff;
+}
+
+/* ================= PANEL ================= */
+.panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+  gap: 20px;
+  padding: 30px;
+}
+
+.card {
+  background: rgba(0,20,50,0.7);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 0 20px #00eaff44;
+  animation: cardGlow 3s infinite alternate;
+  position: relative;
+}
+
+.card h3 {
+  font-family: 'Orbitron';
+  color: #00eaff;
+  margin-bottom: 10px;
+}
+
+/* ================= STATUS ================= */
+.status {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.status.online {
+  background: rgba(0,255,150,0.15);
+  color: #00ff9c;
+  box-shadow: 0 0 10px #00ff9c;
+}
+
+.status.offline {
+  background: rgba(255,0,0,0.15);
+  color: #ff4c4c;
+  box-shadow: 0 0 10px #ff4c4c;
+}
+
+/* ================= INFO MODAL (MUNCUL DI ATAS CHART) ================= */
+.info-modal {
+  position: fixed;
+  top: 90px; /* tepat di bawah navbar */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: none;
+}
+
+.info-content {
+  background: rgba(0, 20, 50, 0.95);
+  border-radius: 14px;
+  padding: 18px 30px;
+  box-shadow: 0 0 30px #00eaff88;
+  text-align: center;
+  animation: floatInfo 3s ease-in-out infinite;
+}
+
+.info-content h2 {
+  font-family: 'Orbitron';
+  color: #00eaff;
+  margin-bottom: 6px;
+}
+
+.info-content p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* ================= CHART ================= */
+.charts {
+  padding: 30px;
+  margin-top: 50px; /* chart diturunkan */
+}
+
+.charts canvas {
+  background: linear-gradient(180deg, rgba(0,234,255,0.08), rgba(0,0,0,0.4));
+  border-radius: 16px;
+  box-shadow: 0 0 25px #00eaff44;
+}
+
+/* ================= LOG ================= */
+.log-section {
+  padding: 30px;
+}
+
+.log-box {
+  height: 160px;
+  background: #020c25;
+  padding: 10px;
+  overflow-y: auto;
+  border-radius: 10px;
+  font-family: monospace;
+  box-shadow: inset 0 0 15px #00eaff33;
+}
+
+/* ================= FOOTER ================= */
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #00eaff;
+  font-size: 14px;
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid #00eaff55;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes glowBox {
+  from { box-shadow: 0 0 25px #00eaff55; }
+  to   { box-shadow: 0 0 50px #00ffea; }
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes floatInfo {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-6px); }
+}
+
+@keyframes cardGlow {
+  from { box-shadow: 0 0 20px #00eaff44; }
+  to   { box-shadow: 0 0 40px #00ffea; }
+}
+
+/* ================= DASHBOARD SPARKLE ================= */
+#sparkleCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+#dashboard > * {
+  position: relative;
+  z-index: 1;
+}
+/* ================= CHART FIX POSITION ================= */
+.charts h2 {
+  margin-bottom: 12px;   /* jarak judul ke grafik */
+}
+
+#multiSensorChart {
+  margin-top: 0;
+  display: block;
+}
